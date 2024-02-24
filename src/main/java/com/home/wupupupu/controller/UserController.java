@@ -3,6 +3,7 @@ package com.home.wupupupu.controller;
 import com.home.wupupupu.pojo.Result;
 import com.home.wupupupu.pojo.User;
 import com.home.wupupupu.service.UserService;
+import com.home.wupupupu.util.JWTUtil;
 import jakarta.validation.constraints.Pattern;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @Validated
@@ -33,7 +37,11 @@ public class UserController {
         if (!password.equals(user.getPassword())){
             return Result.error("密码错误");
         }
-        return Result.success("JWT!!!");
+        Map<String,Object> claims=new HashMap<>();
+        claims.put("username",user.getUsername());
+        claims.put("id",user.getId());
+        String claim= JWTUtil.getToken(claims);
+        return Result.success(claim);
     }
 
 }
