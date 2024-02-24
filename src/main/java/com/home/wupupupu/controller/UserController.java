@@ -25,12 +25,12 @@ public class UserController {
         return Result.error("注册失败,已有用户名");
     }
     @GetMapping("login")
-    public Result login(@Pattern(regexp = "^\\S{5,20}$") String username , @Pattern(regexp = "^\\S{6,32}$") String pasword){
+    public Result login(@Pattern(regexp = "^\\S{5,20}$") String username , @Pattern(regexp = "^\\S{6,32}$") String password){
         User user=userService.findUserByName(username);
         if (user==null){
             return Result.error("用户名不存在");
         }
-        if (!pasword.equals(user.getPassword())){
+        if (!password.equals(user.getPassword())){
             return Result.error("密码错误");
         }
         return Result.success("JWT!!!");
