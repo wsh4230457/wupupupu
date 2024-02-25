@@ -4,4 +4,6 @@ spring:
     username: root
     password: 121314
     url: jdbc:mysql://localhost:3306/wupupupu
-
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true

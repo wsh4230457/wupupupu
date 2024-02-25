@@ -5,6 +5,9 @@ import com.home.wupupupu.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
@@ -18,5 +21,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void register(String username, String password) {
         userMapper.registerUser(username,password);
+    }
+
+    @Override
+    public void updateUserInfo(User user) {
+
+        user.setUpdateTime(LocalDateTime.now());
+        userMapper.updateUserInfo(user);
     }
 }

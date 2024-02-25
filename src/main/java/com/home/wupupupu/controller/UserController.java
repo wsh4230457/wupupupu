@@ -4,11 +4,13 @@ import com.home.wupupupu.pojo.Result;
 import com.home.wupupupu.pojo.User;
 import com.home.wupupupu.service.UserService;
 import com.home.wupupupu.util.JWTUtil;
+import com.home.wupupupu.util.ThreadLocalUtil;
 import jakarta.validation.constraints.Pattern;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +19,7 @@ import java.util.Map;
 
 @RestController
 @Validated
+@RequestMapping("user")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -42,6 +45,28 @@ public class UserController {
         claims.put("id",user.getId());
         String claim= JWTUtil.getToken(claims);
         return Result.success(claim);
+    }
+    @GetMapping("findUser")
+    public Result<User> getUserInfo(){
+        Map<String,Object> claims=ThreadLocalUtil.get();
+
+        String username= (String) claims.get("username");
+
+        User user=userService.findUserByName(username);
+        return Result.success(user);
+    }
+    @GetMapping("updateUser")
+    public Result updateUserInfo(String nickname,String email){
+
+            Map<String,Object> claims=ThreadLocalUtil.get();
+            String username= (String) claims.get("username");
+            User user=userService.findUserByName(username);
+            user.setEmail(email);
+            user.setNickname(nickname);
+            userService.updateUserInfo(user);
+            return Result.success("更新成功");
+
+
     }
 
 }
