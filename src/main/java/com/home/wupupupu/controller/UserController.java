@@ -9,10 +9,7 @@ import jakarta.validation.constraints.Pattern;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,14 +52,8 @@ public class UserController {
         User user=userService.findUserByName(username);
         return Result.success(user);
     }
-    @GetMapping("updateUser")
-    public Result updateUserInfo(String nickname,String email){
-
-            Map<String,Object> claims=ThreadLocalUtil.get();
-            String username= (String) claims.get("username");
-            User user=userService.findUserByName(username);
-            user.setEmail(email);
-            user.setNickname(nickname);
+    @PutMapping("updateUser")
+    public Result updateUserInfo(@RequestBody@Validated User user){
             userService.updateUserInfo(user);
             return Result.success("更新成功");
 
