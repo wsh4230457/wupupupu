@@ -7,7 +7,7 @@ import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.home.wupupupu.util.MD5Util;
 import org.junit.jupiter.api.Test;
-import com.home.wupupupu.util.jwtUtil;
+import com.home.wupupupu.util.JwtUtil;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,11 +43,12 @@ public class testMain {
         Map<String,Object> claims=new HashMap<>();
         claims.put("id",1);
         claims.put("username","wsh");
-        String token=jwtUtil.getToken(claims);
+        String token= JwtUtil.getToken(claims);
+        String token2= "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOnsidXNlcm5hbWUiOiI0MjMwNDU3In0sImV4cCI6MTcxMzM2NTY5OH0.CE4figTSCLv0I3D8nxg73Dzb3GVuFuZ5MnQ9S6B__Gs";
         System.out.println(token);
         Map<String,Object> claims2;
 
-        claims2=jwtUtil.parseToken(token);
-        System.out.println(claims2.get("id"));
+        claims2= JwtUtil.parseToken(token2);
+        System.out.println(claims2.get("username"));
     }
 }

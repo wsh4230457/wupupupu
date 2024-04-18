@@ -6,7 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import java.util.Date;
 import java.util.Map;
 
-public class jwtUtil {
+public class JwtUtil {
     private static final String KEY="1234";
     public static  String getToken(Map<String,Object> claims){
         return JWT.create().withClaim("claims",claims)
