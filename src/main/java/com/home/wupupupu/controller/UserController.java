@@ -5,14 +5,15 @@ import com.home.wupupupu.pojo.User;
 import com.home.wupupupu.service.UserService;
 import com.home.wupupupu.util.JwtUtil;
 import com.home.wupupupu.util.MD5Util;
+import com.home.wupupupu.util.ThreadLocalUtil;
 import jakarta.validation.constraints.Pattern;
 import org.apache.ibatis.annotations.Param;
+import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,9 +44,25 @@ public class UserController {
         }
         Map<String,Object> claim=new HashMap<>();
         claim.put("username",username);
-
+        claim.put("id",user.getId());
         String token= JwtUtil.getToken(claim);
         return Result.success(token);
     }
+    @PutMapping("/update")
+    public Result updateUser(@Validated @RequestBody User user){
+        user.setUpdateTime(LocalDateTime.now());
+        userService.updateUser(user);
+        return Result.success("更新用户"+user.getUsername()+"成功");
+    }
+    @PutMapping("/updateAvatar")
+    public Result updateAvatar(@RequestParam @URL String AvatarUrl){
 
+        userService.updateAvatar(AvatarUrl);
+        return Result.success();
+    }
+    @PatchMapping("/updatePassword")
+    public Result updatePassword(@RequestBody Map<String,String> params){
+        userService.updatePassword(params);
+        return Result.success();
+    }
 }

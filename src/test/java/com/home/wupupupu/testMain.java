@@ -5,9 +5,13 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.home.wupupupu.pojo.Article;
 import com.home.wupupupu.util.MD5Util;
 import org.junit.jupiter.api.Test;
 import com.home.wupupupu.util.JwtUtil;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,4 +55,11 @@ public class testMain {
         claims2= JwtUtil.parseToken(token2);
         System.out.println(claims2.get("username"));
     }
+    @Test
+    void time(){
+        Article article=new Article();
+        article.setCreateTime(Timestamp.valueOf(LocalDateTime.now()));
+        System.out.println(article.getCreateTime());
+    }
+
 }

@@ -1,25 +1,25 @@
 package com.home.wupupupu.controller;
 
+import com.home.wupupupu.pojo.Article;
 import com.home.wupupupu.pojo.Result;
-import com.home.wupupupu.util.JwtUtil;
-import jakarta.servlet.http.HttpServletResponse;
+import com.home.wupupupu.service.ArticleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/article")
 public class ArticleController {
+    @Autowired
+    ArticleService articleService;
     @PostMapping("/list")
-    public Result allArticle(@RequestHeader(name = "Authorization") String token, HttpServletResponse response){
-        try {
-            System.out.println(token);
-            JwtUtil.parseToken(token);
+    public Result allArticle(){
+
             return Result.success("ALL Article");
-        }catch (Exception e){
-            response.setStatus(401);
-            e.printStackTrace();
-            return Result.error("未登入");
-        }
-
-
+    }
+    @PostMapping("addArticle")
+    public Result addArticle(@RequestBody @Validated(Article.add.class) Article article){
+        articleService.addArticle(article);
+        return Result.success();
     }
 }
